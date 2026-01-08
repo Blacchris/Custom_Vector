@@ -1,0 +1,24 @@
+# Ignore build artifacts
+*.exe
+*.out
+*.o
+*.obj
+*.s
+*.i
+
+# VSCode
+.vscode/
+
+# Compilers and build folders
+build/
+bin/
+CMakeFiles/
+CMakeCache.txt
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Backup files
+*~
+*.swp
