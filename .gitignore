@@ -1,24 +1,27 @@
-# Ignore build artifacts
+
+# Ignore everything by default, but allow the Vector/CustomVector.cpp file
+/*
+!/Vector/
+!/Vector/CustomVector.cpp
+!.gitignore
+
+# Allow directories
+*/
+
+# Keep common editor/project ignores local-only if needed
+# (Untracked locally but not part of the repo)
 *.exe
 *.out
 *.o
 *.obj
 *.s
 *.i
-
-# VSCode
 .vscode/
-
-# Compilers and build folders
 build/
 bin/
 CMakeFiles/
 CMakeCache.txt
-
-# OS files
 Thumbs.db
 desktop.ini
-
-# Backup files
 *~
 *.swp
