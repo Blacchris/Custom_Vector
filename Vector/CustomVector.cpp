@@ -23,12 +23,12 @@ public:
   Vector(): data(nullptr), sz(0), cap(0){};
   ~Vector(){delete[] data;};
 
-  void push_back(T value){
+  void push_back (T value){
     if(sz == cap) resize();
     data[sz++] = value;
   }
 
-  size_t capacity(){
+  size_t capacity() const{
     return cap;
   }
 
@@ -36,30 +36,52 @@ public:
     if(sz > 0) --sz;
   }
 
+  bool empty() const{
+    return sz == 0;
+  }
+
   //operator[] is a special member function that lets you use the square bracket syntax ([]) on objects of your class.
   T& operator[](size_t index){
+    if(index >= sz) throw std::out_of_range("Out of bounds");
     return data[index];
   }
-  size_t size(){return sz;}
+
+  const T& at(size_t index) const {
+    if(index >= sz) throw std::out_of_range("Out of bounds");
+    return data[index];
+  }
+
+  const T& front() const {
+    if(sz == 0) throw std::out_of_range("Vector is empty");
+    return data[0];
+  }
+
+  const T& back() const {
+    if(sz == 0) throw std::out_of_range("Vector is empty");
+    return data[sz - 1];
+  }
+
+  size_t size() const {return sz;}
 };
 
-template<typename T>
-class Person{
 
-};
+
+using namespace std;
 
 int main() {
 
  Vector<int> v;
 
-  for (int i = 0; i < 10; i++) {
-    v.push_back(i * 10);
-    std::cout << "Size: " << v.size()
-            << " Capacity: " << v.capacity() << "\n";
-  }
+ for(int i = 0; i < 5; ++i){
+  v.push_back(i * 5);
+ }
 
-    for (size_t i = 0; i < v.size(); i++)
-        std::cout << v[i] << " ";
+ cout << "Value at index: " << v.at(2) << endl;
+ cout << "Value at front: " << v.front() << endl;
+ cout << "Value at back: " << v.back() << endl;
+
+
+
   
   
   
