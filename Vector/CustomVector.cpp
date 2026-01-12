@@ -45,6 +45,15 @@ public:
     return data[index];
   }
 
+  const T& operator[](size_t index) const{
+    return data[index];
+  }
+  
+  T& at(size_t index){
+    //Bounds checking
+    if(index >= sz) throw std::out_of_range("Index out of range");
+    return data[index];
+  }
   const T& at(size_t index) const {
     //Bounds checking
     if(index >= sz) throw std::out_of_range("Index out of range");
@@ -72,20 +81,12 @@ int main() {
 
  Vector<int> v;
 
- int* ptr = nullptr;
- cout << *ptr << endl; // This will likely cause a segmentation fault
+ for(int i = 0; i < 10; ++i){
+   v.push_back(i * 10);
+ }
 
-//  for(int i = 0; i < 5; ++i){
-//   v.push_back(i * 5);
-//  }
-
-//  const Vector<int> v2 = v; // Testing copy constructor
-
-//  for(size_t i = 0; i < v2.size(); ++i) cout << v2.at(i) << " ";
-
-
-  
-  
-  
+ {
+  Vector<int> v2 = v; // Using the default copy constructor
+ }
   return 0;
 }
