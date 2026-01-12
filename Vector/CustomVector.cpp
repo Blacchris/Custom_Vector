@@ -21,7 +21,28 @@ private:
   }
 public:
   Vector(): data(nullptr), sz(0), cap(0){};
+  //Deep Copy Constructor that duplicats underlying array
+  Vector(const Vector& other): data(nullptr), sz(other.sz), cap(other.cap){
+    if(cap > 0){
+      data = new T[cap];
+      for(size_t i = 0; i < sz; ++i){
+        data[i] = other.data[i];
+      }
+    }
+  } 
   ~Vector(){delete[] data;};
+
+  Vector& operator=(const Vector& other){
+    if (this != &other) delete[] data;
+    sz = other.sz;
+    cap = other.cap;
+
+    data = new T[cap];
+    for(size_t i = 0; i < sz; ++i){
+      data[i] = other.data[i];
+    }
+    return *this;
+  }
 
   void push_back (T value){
     if(sz == cap) resize();
@@ -80,13 +101,21 @@ using namespace std;
 int main() {
 
  Vector<int> v;
+ 
 
- for(int i = 0; i < 10; ++i){
-   v.push_back(i * 10);
- }
+ Vector<int> v2;
 
- {
-  Vector<int> v2 = v; // Using the default copy constructor
- }
+  v2 = v; 
+
+
+
+
+
+
+
+
+
+
+
   return 0;
 }
