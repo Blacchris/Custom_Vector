@@ -42,12 +42,12 @@ public:
 
   //operator[] is a special member function that lets you use the square bracket syntax ([]) on objects of your class.
   T& operator[](size_t index){
-    if(index >= sz) throw std::out_of_range("Out of bounds");
     return data[index];
   }
 
   const T& at(size_t index) const {
-    if(index >= sz) throw std::out_of_range("Out of bounds");
+    //Bounds checking
+    if(index >= sz) throw std::out_of_range("Index out of range");
     return data[index];
   }
 
@@ -72,14 +72,16 @@ int main() {
 
  Vector<int> v;
 
- for(int i = 0; i < 5; ++i){
-  v.push_back(i * 5);
- }
+ int* ptr = nullptr;
+ cout << *ptr << endl; // This will likely cause a segmentation fault
 
- cout << "Value at index: " << v.at(2) << endl;
- cout << "Value at front: " << v.front() << endl;
- cout << "Value at back: " << v.back() << endl;
+//  for(int i = 0; i < 5; ++i){
+//   v.push_back(i * 5);
+//  }
 
+//  const Vector<int> v2 = v; // Testing copy constructor
+
+//  for(size_t i = 0; i < v2.size(); ++i) cout << v2.at(i) << " ";
 
 
   
