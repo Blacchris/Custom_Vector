@@ -21,7 +21,8 @@ private:
   }
 public:
   Vector(): data(nullptr), sz(0), cap(0){};
-  //Deep Copy Constructor that duplicats underlying array
+  // Vector(size_t size = 0): data(size ? new T[size] : nullptr), size
+  //Deep Copy Constructor that duplicates underlying array
   Vector(const Vector& other): data(nullptr), sz(other.sz), cap(other.cap){
     if(cap > 0){
       data = new T[cap];
@@ -30,19 +31,58 @@ public:
       }
     }
   } 
-  ~Vector(){delete[] data;};
 
-  Vector& operator=(const Vector& other){
-    if (this != &other) delete[] data;
-    sz = other.sz;
-    cap = other.cap;
+  Vector(Vector&& other): sz(other.sz), cap(other.cap), data(other.data){
+    other.sz = 0;
+    other.cap = 0;
+    other.data = nullptr;
+  }
 
-    data = new T[cap];
-    for(size_t i = 0; i < sz; ++i){
-      data[i] = other.data[i];
+  Vector& operator=(Vector&& other){
+    if(this != &other){
+      delete[] data;
+      data = other.data;
+      sz = other.sz;
+      cap = other.cap;
+
+      other.data = nullptr;
+      other.sz = 0;
+      other.cap = 0;
     }
     return *this;
   }
+
+  Vector& operator=(const Vector& other){
+    if(this == &other) return *this;
+    delete[] data;
+    sz = other.sz;
+    cap = other.cap;
+    
+    if (cap > 0) {
+      data = new T[cap];
+      for(size_t i = 0; i < other.sz; ++i){
+        data[i] = other.data[i];
+      }
+    } else {
+      data = nullptr;
+    }
+    return *this;
+  }
+
+  ~Vector(){delete[] data;};
+
+
+
+  // void swap(Vector& other){
+  //   swap(data, other.data);
+  //   swap(sz, other.sz);
+  //   swap(cap, other.cap);
+  // }
+
+  // Vector& operator=(Vector other){
+  //   swap(other);
+  //   return *this;
+  // }
 
   void push_back (T value){
     if(sz == cap) resize();
@@ -58,7 +98,8 @@ public:
   }
 
   bool empty() const{
-    return sz == 0;
+    if(sz == 0) return true;
+    return false;
   }
 
   //operator[] is a special member function that lets you use the square bracket syntax ([]) on objects of your class.
@@ -100,12 +141,31 @@ using namespace std;
 
 int main() {
 
- Vector<int> v;
+
+ Vector<int> nums;
+
+ for(size_t i = 0; i < 5; ++i){
+  nums.push_back(i * 10);
+ }
+
+ Vector<int> nums2;
+ nums2 = move(nums);
+
+ for(size_t i = 0; i < nums2.size(); ++i){
+  cout << nums2[i] << ", ";
+ }
  
+ cout << endl;
 
- Vector<int> v2;
+ for(size_t i = 0; i < nums.size(); ++i){
+  cout << nums[i] << ", ";
+ }
+  // int arr[] = {12, 3, 4, 2, 1}; // spatial local array
+  // int s = 0; // temporal locality
 
-  v2 = v; 
+  // for(int i = 0; i < 5; ++i){
+  //   s += arr[i];
+  // }
 
 
 
