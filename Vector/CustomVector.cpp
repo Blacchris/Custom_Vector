@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 
 
+
+using namespace std;
 template<typename T>
 class Vector{
 
@@ -20,6 +22,7 @@ private:
     cap = newcap;
   }
 public:
+  Vector(size_t s): sz(s), cap(s * 2), data(new T[cap]){};
   Vector(): data(nullptr), sz(0), cap(0){};
   // Vector(size_t size = 0): data(size ? new T[size] : nullptr), size
   //Deep Copy Constructor that duplicates underlying array
@@ -30,12 +33,14 @@ public:
         data[i] = other.data[i];
       }
     }
+  cout << "Copy Constructor was called" << endl;
   } 
 
   Vector(Vector&& other): sz(other.sz), cap(other.cap), data(other.data){
     other.sz = 0;
     other.cap = 0;
     other.data = nullptr;
+    cout << "Move was Called" << endl;
   }
 
   Vector& operator=(Vector&& other){
@@ -84,6 +89,18 @@ public:
   //   return *this;
   // }
 
+  void erase(int index){
+    if(index >= sz){
+      throw out_of_range("Out of range");
+    }
+    
+    data[index].~T();
+    for(int i = index; i < sz - 1; ++i){
+      data[i] = move(data[i + 1]);
+    }
+    sz--;
+  }
+
   void push_back (T value){
     if(sz == cap) resize();
     data[sz++] = value;
@@ -104,6 +121,9 @@ public:
 
   //operator[] is a special member function that lets you use the square bracket syntax ([]) on objects of your class.
   T& operator[](size_t index){
+    if(data == nullptr){
+      cout << "Segmentation fault" << endl;
+    }
     return data[index];
   }
 
@@ -137,35 +157,34 @@ public:
 
 
 
-using namespace std;
 
 int main() {
 
+  Vector<int> v(10);
 
- Vector<int> nums;
+  for(int i = 0; i < v.size(); ++i) v.push_back(i * 10);
 
- for(size_t i = 0; i < 5; ++i){
-  nums.push_back(i * 10);
- }
+  for(size_t i = 0; i < v.size(); ++i) cout << v[i] << " ";
+  // int* ptr = new int[4];
+  // for(int i = 0; i < 4; ++i) cout << *(ptr + 1) << ", ";
 
- Vector<int> nums2;
- nums2 = move(nums);
-
- for(size_t i = 0; i < nums2.size(); ++i){
-  cout << nums2[i] << ", ";
- }
  
- cout << endl;
+ 
+  // Vector<int> nums;
 
- for(size_t i = 0; i < nums.size(); ++i){
-  cout << nums[i] << ", ";
- }
-  // int arr[] = {12, 3, 4, 2, 1}; // spatial local array
-  // int s = 0; // temporal locality
-
-  // for(int i = 0; i < 5; ++i){
-  //   s += arr[i];
+  // for(size_t i = 0; i < 1'000; ++i){
+  //   nums.push_back(i*10);
   // }
+
+  // // Vector<int> nums2 = move(nums);
+
+  // cout << nums[1] << endl; 
+  // // int arr[] = {12, 3, 4, 2, 1}; // spatial local array
+  // // int s = 0; // temporal locality
+
+  // // for(int i = 0; i < 5; ++i){
+  // //   s += arr[i];
+  // // }
 
 
 
