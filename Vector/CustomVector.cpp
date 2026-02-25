@@ -1,5 +1,5 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <string>
 
 
 using namespace std;
@@ -15,7 +15,7 @@ private:
     size_t newcap = cap == 0 ? 1 : cap * 2;
     T* newdata = new T[newcap];
     for(size_t i = 0; i < sz; ++i){
-      newdata[i] = data[i];
+      newdata[i] = move(data[i]);
     }
     delete[] data;
     data = newdata;
@@ -36,7 +36,7 @@ public:
   cout << "Copy Constructor was called" << endl;
   } 
 
-  Vector(Vector&& other): sz(other.sz), cap(other.cap), data(other.data){
+  Vector(Vector&& other) noexcept : sz(other.sz), cap(other.cap), data(other.data) {
     other.sz = 0;
     other.cap = 0;
     other.data = nullptr;
@@ -57,21 +57,29 @@ public:
     return *this;
   }
 
-  Vector& operator=(const Vector& other){
-    if(this == &other) return *this;
-    delete[] data;
-    sz = other.sz;
-    cap = other.cap;
-    
-    if (cap > 0) {
-      data = new T[cap];
-      for(size_t i = 0; i < other.sz; ++i){
-        data[i] = other.data[i];
-      }
-    } else {
-      data = nullptr;
-    }
+  void swapper(Vector& v1, Vector& v2) noexcept {
+    swap(v1.data, v2.data);
+    swap(v1.sz, v2.sz);
+    swap(v1.cap, v2.cap);
+  }
+
+  Vector& operator=(Vector other) noexcept {
+    swapper(*this, other);
     return *this;
+    // if(this == &other) return *this;
+    // delete[] data;
+    // sz = other.sz;
+    // cap = other.cap;
+    
+    // if (cap > 0) {
+    //   data = new T[cap];
+    //   for(size_t i = 0; i < other.sz; ++i){
+    //     data[i] = other.data[i];
+    //   }
+    // } else {
+    //   data = nullptr;
+    // }
+    // return *this;
   }
 
   ~Vector(){delete[] data;};
@@ -156,37 +164,24 @@ public:
 };
 
 
-
-
 int main() {
 
-  Vector<int> v(10);
-
-  for(int i = 0; i < v.size(); ++i) v.push_back(i * 10);
-
-  for(size_t i = 0; i < v.size(); ++i) cout << v[i] << " ";
-  // int* ptr = new int[4];
-  // for(int i = 0; i < 4; ++i) cout << *(ptr + 1) << ", ";
 
  
- 
-  // Vector<int> nums;
+  Vector<string> st;
+  for(int i = 0; i < 10; ++i){
+    st.push_back("hdhjyre");
+  }
 
-  // for(size_t i = 0; i < 1'000; ++i){
-  //   nums.push_back(i*10);
-  // }
+  // st.erase(4);
+  for(size_t i = 0; i < st.size(); ++i) cout << st[i] << "  ";
 
-  // // Vector<int> nums2 = move(nums);
+  cout << endl;
 
-  // cout << nums[1] << endl; 
-  // // int arr[] = {12, 3, 4, 2, 1}; // spatial local array
-  // // int s = 0; // temporal locality
+  string s = "4252";
+  s.~string();
 
-  // // for(int i = 0; i < 5; ++i){
-  // //   s += arr[i];
-  // // }
-
-
+  cout << s << endl;
 
 
 
